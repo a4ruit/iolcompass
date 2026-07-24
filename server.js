@@ -113,6 +113,12 @@ wss.on('connection', (ws, req) => {
       return;
     }
 
+    // Entity positions from Unity, relayed to the phones that render the audio.
+    if (msg.type === 'entities') {
+      broadcast(room, ws, msg);
+      return;
+    }
+
     if (msg.type === 'ping') {
       ws.send(JSON.stringify({ type: 'pong', ts: Date.now() }));
     }
