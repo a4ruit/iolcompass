@@ -119,6 +119,17 @@ wss.on('connection', (ws, req) => {
       return;
     }
 
+    // One-shot cue (an entity entered the facing cone). Distinct from the
+    // ping/pong keepalive below.
+    if (msg.type === 'cue') {
+      broadcast(room, ws, {
+        type: 'cue',
+        x: Number(msg.x) || 0,
+        z: Number(msg.z) || 0
+      });
+      return;
+    }
+
     if (msg.type === 'ping') {
       ws.send(JSON.stringify({ type: 'pong', ts: Date.now() }));
     }
